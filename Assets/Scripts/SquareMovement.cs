@@ -27,8 +27,19 @@ public class SquareMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            Debug.Log("W is pressed");
             moveDirection.y += 1;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveDirection.y += -1;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveDirection.x += 1;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveDirection.x += -1;
         }
     }
 
