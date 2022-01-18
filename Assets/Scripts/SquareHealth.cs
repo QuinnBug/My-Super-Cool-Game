@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SquareHealth : MonoBehaviour
 {
     public int startingHealth;
-    public SquareMovement sqrMove;
+    public Slider hpBar;
 
     private int currentHealth;
 
@@ -14,7 +15,8 @@ public class SquareHealth : MonoBehaviour
     void Start()
     {
         currentHealth = startingHealth;
-        sqrMove = this.gameObject.GetComponent<SquareMovement>();
+        hpBar.value = currentHealth;
+        hpBar.maxValue = startingHealth;
     }
 
     internal void AddHealth(int healAmount)
@@ -25,16 +27,18 @@ public class SquareHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (sqrMove.IsMoving())
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Dead");
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
             TakeDamage(1);
         }
 
-        if (currentHealth <= 0)
-        {
-            Debug.Log("Dead");
-        }
-
+        hpBar.value = currentHealth;
         currentHealth = Mathf.Clamp(currentHealth, 0, startingHealth);
     }
 
