@@ -7,16 +7,14 @@ using UnityEngine.UI;
 public class SquareHealth : MonoBehaviour
 {
     public int startingHealth;
-    public Slider hpBar;
 
-    private int currentHealth;
+    private float currentHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = startingHealth;
-        hpBar.value = currentHealth;
-        hpBar.maxValue = startingHealth;
+        GameManager.Instance.m_EnemyKilled.AddListener(HealOnKill);
     }
 
     internal void AddHealth(int healAmount)
@@ -24,13 +22,23 @@ public class SquareHealth : MonoBehaviour
         currentHealth += healAmount;
     }
 
+    internal void HealOnKill()
+    {
+        AddHealth(1);
+        Debug.Log("Vampired");
+    }
+
+    internal float GetHealth()
+    {
+        return currentHealth;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (currentHealth <= 0)
         {
-            Debug.Log("Dead");
-            return;
+            //whatever my death code is
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -38,11 +46,10 @@ public class SquareHealth : MonoBehaviour
             TakeDamage(1);
         }
 
-        hpBar.value = currentHealth;
         currentHealth = Mathf.Clamp(currentHealth, 0, startingHealth);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
     }

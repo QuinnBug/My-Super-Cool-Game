@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,10 @@ public class SquareMovement : MonoBehaviour
     public float acceleration;
     public float maxSpeed;
     public float turnSpeed;
+    [Space]
+    public float dashSpeed;
+    public float dashDelay;
+    private float dashTimer;
     private Vector2 moveDirection;
     private Rigidbody2D rb;
 
@@ -33,6 +38,24 @@ public class SquareMovement : MonoBehaviour
             float angle = Mathf.Atan2(newDirection.y, newDirection.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer <= 0)
+        {
+            Dash();
+            dashTimer = dashDelay;
+        }
+        dashTimer -= Time.deltaTime;
+    }
+
+    private void Dash()
+    {
+        rb.AddForce(moveDirection * dashSpeed);
+    }
+
+    internal string GetSpeed()
+    {
+        int speed = (int)(rb.velocity.magnitude * 10);
+        return speed.ToString();
     }
 
     private void MovementInputs()
